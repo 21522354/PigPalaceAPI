@@ -6,12 +6,17 @@ namespace PigPalaceAPI.Data.Entity
     [Table("PigFarm")]
     public class PigFarm
     {
-        public int ID { get; set; } 
-        public string Name { get; set; }    
-        public string Gmail { get; set; }
+        [Key]   
+        public Guid FarmID { get; set; } 
+        public string Name { get; set; }
         [Required]
-        public string UserName { get; set; }
+        public string Gmail { get; set; }
         [Required]  
-        public string PassWord { get; set; }    
+        public string PassWord { get; set; }
+        public bool IsFromGoogle { get; set; }
+        public bool IsFromFB { get; set; }  
+
+        public string? FBID { get; set; }
+        public string? GoogleID { get; set; }
     }
 }
