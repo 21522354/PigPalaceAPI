@@ -16,7 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PigPalaceDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PigPalaceDB")));
+
 builder.Services.AddScoped<IFarmRepository, FarmRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();  
 #endregion
 
 #region configure JWT
