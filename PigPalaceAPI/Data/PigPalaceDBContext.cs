@@ -8,6 +8,9 @@ namespace PigPalaceAPI.Data
         public PigPalaceDBContext(DbContextOptions<PigPalaceDBContext> options) : base(options)
         {
         }
-        public DbSet<PigFarm> PigFarms { get; set; }    
+        public DbSet<PigFarm> PigFarms { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Roles> Roles { get; set; }
+        public DbSet<RolesClaims> RolesClaims { get; set; } 
     }
 }
