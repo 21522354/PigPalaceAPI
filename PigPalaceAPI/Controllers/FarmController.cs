@@ -19,6 +19,10 @@ namespace PigPalaceAPI.Controllers
         public async Task<IActionResult> NormalSignIn(string Gmail, string PassWord)
         {
             var result = await _farmRepository.NormalSignIn(Gmail, PassWord);
+            if(result == "Invalid Credentials")
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 

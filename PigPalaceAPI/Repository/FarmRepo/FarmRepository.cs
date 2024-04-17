@@ -21,8 +21,8 @@ namespace PigPalaceAPI.Repository.FarmRepo
             if (PigFarm == null)
             {
                 return "Invalid Credentials";
-            }   
-            return "Login Successful";
+            }
+            return PigFarm.FarmID.ToString();
         }
 
         public async Task<string> GoogleSignIn(string GoogleID)
@@ -32,17 +32,17 @@ namespace PigPalaceAPI.Repository.FarmRepo
             {
                 return "Invalid Credentials";
             }
-            return "Login Successful";  
+            return PigFarm.FarmID.ToString();  
         }
 
         public async Task<string> NormalSignIn(string Gmail, string PassWord)
         {
-            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.Gmail == Gmail && x.PassWord == PassWord);
-            if (farm == null)
+            var PigFarm = await _context.PigFarms.FirstOrDefaultAsync(x => x.Gmail == Gmail && x.PassWord == PassWord);
+            if (PigFarm == null)
             {
                 return "Invalid Credentials";
             }
-            return "Login Successful";  
+            return PigFarm.FarmID.ToString();  
         }
 
         public async Task<string> SignUp(string Name, string Gmail, string PassWord)
@@ -61,7 +61,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
             };
             await _context.PigFarms.AddAsync(farm); 
             await _context.SaveChangesAsync();
-            return "Registration Successful";
+            return farm.FarmID.ToString();
         }
     }
 }
