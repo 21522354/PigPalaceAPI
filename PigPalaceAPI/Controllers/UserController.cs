@@ -60,7 +60,7 @@ namespace PigPalaceAPI.Controllers
         public async Task<IActionResult> SignIn(int UserID, string PassWord)
         {
             var result = await _userRepository.SignIn(UserID, PassWord);
-            if (result == "Invalid Credentials")
+            if (result.Message == "Invalid Credentials")
             {
                 return Unauthorized();
             }
@@ -70,11 +70,11 @@ namespace PigPalaceAPI.Controllers
         public async Task<IActionResult> SignUp(UserModel user)
         {
             var result = await _userRepository.SignUp(user);
-            if(result == "Farm does not exist")
+            if(result.Message == "Farm does not exist")
             {
                 return BadRequest("Farm does not exist");
             }
-            if(result == "User creation failed")
+            if(result.Message == "Sign up failed")
             {
                 return BadRequest("Sign Up failed");
             }

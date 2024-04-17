@@ -1,17 +1,23 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PigPalaceAPI.Data;
 using PigPalaceAPI.Data.Entity;
 using PigPalaceAPI.Model;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace PigPalaceAPI.Repository.FarmRepo
 {
     public class UserRepository : IUserRepository
     {
         private readonly PigPalaceDBContext _context;
+        private readonly IConfiguration _configuration;
 
-        public UserRepository(PigPalaceDBContext context)
+        public UserRepository(PigPalaceDBContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
         public async Task<string> DeleteUser(int userID)
         {
@@ -36,25 +42,66 @@ namespace PigPalaceAPI.Repository.FarmRepo
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == ID);
             return user;
         }
+        private async Task<string> GenerateToken(User user)
+        {
+            // phát sinh token và trả về cho người dùng sau khi đăng nhập thành công
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var secretKey = _configuration["AppSettings:SecretKey"];
+            var secterKeyByte = Encoding.UTF8.GetBytes(secretKey);
 
-        public async Task<string> SignIn(int userID, string password)
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                // nội dung của token   
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim("UserID", user.UserID.ToString())
+                }),
+                // thời gian sống của token
+                Expires = DateTime.UtcNow.AddMinutes(20),
+                // ký vào token
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secterKeyByte), SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            var token = jwtTokenHandler.CreateToken(tokenDescriptor);
+            var accessToken = jwtTokenHandler.WriteToken(token);
+            return accessToken;
+        }
+
+        public async Task<APIRespond> SignIn(int userID, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == userID && x.PassWord == password);
             if (user == null)
             {
-                return "Invalid Credentials";
+                return new APIRespond
+                {
+                    Status = false,
+                    Message = "Invalid Credentials"
+                };
             }
-            return "Login Successful";  
+            return new APIRespond
+            {
+                UserID = user.UserID,   
+                Status = true,
+                Message = "Login successful",
+                Data = await GenerateToken(user)
+            };
         }
 
-        public async Task<string> SignUp(UserModel user)
+        public async Task<APIRespond> SignUp(UserModel user)
         {
             try
             {
                 var ressult = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == user.FarmID);
                 if(ressult == null)
                 {
-                    return "Farm does not exist";
+                    return new APIRespond
+                    {
+                        Status = false,
+                        Message = "Farm does not exist"
+                    };
                 }   
                 var newUser = new User
                 {
@@ -73,11 +120,11 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 }
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
-                return "User created successfully";
+                return new APIRespond { UserID = newUser.UserID ,Status = true, Message = "Login successful", Data = await GenerateToken(newUser) };
             }
             catch
             {
-                return "User creation failed";
+                return new APIRespond() { Status = false, Message = "Sign up failed" };
             }
             
         }
