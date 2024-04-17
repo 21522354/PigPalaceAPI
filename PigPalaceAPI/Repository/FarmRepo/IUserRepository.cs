@@ -10,6 +10,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
         public Task<APIRespond> SignIn(int userID, string password);    
         public Task<APIRespond> SignUp(UserModel user);      
         public Task<string> UpdateUser(UserModel user, int userID);    
-        public Task<string> DeleteUser(int userID);     
+        public Task<string> DeleteUser(int userID);
+        public Task<APIRespond> RenewToken(TokenModel tokenModel);
     }
 }

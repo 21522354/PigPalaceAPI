@@ -80,5 +80,15 @@ namespace PigPalaceAPI.Controllers
             }
             return Ok(result);  
         }
+        [HttpPost("RefreshToken")]  
+        public async Task<IActionResult> RefreshToken(TokenModel token)
+        {
+            var result = await _userRepository.RenewToken(token);
+            if (result.Status == false)
+            {
+                return Unauthorized(result);
+            }
+            return Ok(result);  
+        }
     }
 }

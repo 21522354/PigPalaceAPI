@@ -11,6 +11,7 @@ namespace PigPalaceAPI.Data
         public DbSet<PigFarm> PigFarms { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
-        public DbSet<RolesClaims> RolesClaims { get; set; } 
+        public DbSet<RolesClaims> RolesClaims { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }
