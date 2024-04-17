@@ -20,7 +20,20 @@ namespace PigPalaceAPI.Repository.FarmRepo
             var PigFarm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FBID == FBID);
             if (PigFarm == null)
             {
-                return "Invalid Credentials";
+                var validFB = await _context.PigFarms.FirstOrDefaultAsync(x => x.FBID == FBID);
+                if (validFB != null)
+                {
+                    return "Facebook account already exists";
+                }
+                var farm = new PigFarm
+                {
+                    FarmID = Guid.NewGuid(), 
+                    FBID = FBID,
+                    IsFromFB = true 
+                };
+                await _context.PigFarms.AddAsync(farm);
+                await _context.SaveChangesAsync();
+                return farm.FarmID.ToString();
             }
             return PigFarm.FarmID.ToString();
         }
@@ -30,7 +43,20 @@ namespace PigPalaceAPI.Repository.FarmRepo
             var PigFarm = await _context.PigFarms.FirstOrDefaultAsync(x => x.GoogleID == GoogleID);   
             if (PigFarm == null)
             {
-                return "Invalid Credentials";
+                var validGmail = await _context.PigFarms.FirstOrDefaultAsync(x => x.GoogleID == GoogleID);
+                if (validGmail != null)
+                {
+                    return "Google account already exists";
+                }
+                var farm = new PigFarm
+                {
+                    FarmID = Guid.NewGuid(),
+                    GoogleID = GoogleID,
+                    IsFromGoogle = true
+                };
+                await _context.PigFarms.AddAsync(farm);
+                await _context.SaveChangesAsync();
+                return farm.FarmID.ToString();
             }
             return PigFarm.FarmID.ToString();  
         }

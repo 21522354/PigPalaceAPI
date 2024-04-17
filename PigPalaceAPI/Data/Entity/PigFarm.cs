@@ -8,11 +8,9 @@ namespace PigPalaceAPI.Data.Entity
     {
         [Key]   
         public Guid FarmID { get; set; } 
-        public string Name { get; set; }
-        [Required]
-        public string Gmail { get; set; }
-        [Required]  
-        public string PassWord { get; set; }
+        public string? Name { get; set; }
+        public string? Gmail { get; set; }
+        public string? PassWord { get; set; }
         public bool IsFromGoogle { get; set; }
         public bool IsFromFB { get; set; }  
 
