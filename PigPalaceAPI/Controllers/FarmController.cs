@@ -57,6 +57,16 @@ namespace PigPalaceAPI.Controllers
                 return BadRequest(result);
             }   
             return Ok(result);
-        }   
+        }
+        [HttpPost("ChangeName")]    
+        public async Task<IActionResult> ChangeName(Guid FarmID, string Name)
+        {
+            var result = await _farmRepository.ChangeName(FarmID, Name);
+            if(result == "Farm not found")
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
     }
 }

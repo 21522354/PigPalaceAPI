@@ -15,6 +15,18 @@ namespace PigPalaceAPI.Repository.FarmRepo
             _context = context;
         }
 
+        public async Task<string> ChangeName(Guid FarmID, string Name)
+        {
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);
+            if (farm == null)
+            {
+                return "Farm not found";
+            }
+            farm.Name = Name;
+            await _context.SaveChangesAsync();
+            return "Name changed successfully";             
+        }
+
         public async Task<string> FbSignIn(string FBID)
         {
             var PigFarm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FBID == FBID);
@@ -89,5 +101,6 @@ namespace PigPalaceAPI.Repository.FarmRepo
             await _context.SaveChangesAsync();
             return farm.FarmID.ToString();
         }
+        
     }
 }

@@ -8,6 +8,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
         public Task<string> GoogleSignIn(string GoogleID);  
         public Task<string> FbSignIn(string FBID); 
         public Task<string> SignUp(string Name, string Gmail, string PassWord);
+        public Task<string> ChangeName(Guid FarmID, string Name);
 
     }
 }
