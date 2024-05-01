@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PigPalaceAPI.Data;
 
@@ -11,9 +12,11 @@ using PigPalaceAPI.Data;
 namespace PigPalaceAPI.Migrations
 {
     [DbContext(typeof(PigPalaceDBContext))]
-    partial class PigPalaceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240501134754_add table Heo ChuongHeo LoaiHeo GiongHeo")]
+    partial class addtableHeoChuongHeoLoaiHeoGiongHeo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,9 +29,6 @@ namespace PigPalaceAPI.Migrations
                 {
                     b.Property<Guid>("MaChuong")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FarmID")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("GhiChu")
@@ -83,9 +83,6 @@ namespace PigPalaceAPI.Migrations
                     b.Property<string>("DonGiaNhap")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("FarmID")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("GioiTinh")
                         .IsRequired()

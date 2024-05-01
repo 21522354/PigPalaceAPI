@@ -13,5 +13,9 @@ namespace PigPalaceAPI.Data
         public DbSet<Roles> Roles { get; set; }
         public DbSet<RolesClaims> RolesClaims { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<HEO> HEOs { get; set; }        
+        public DbSet<CHUONGHEO> CHUONGHEOs { get; set; }    
+        public DbSet<GIONGHEO> GIONGHEOs { get; set; }
+        public DbSet<LOAIHEO> LOAIHEOs { get; set; }        
     }
 }
