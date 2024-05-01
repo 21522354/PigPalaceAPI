@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using PigPalaceAPI.Data;
+using PigPalaceAPI.Repository.ChuongHeoRepo;
 using PigPalaceAPI.Repository.FarmRepo;
 using System.Text;
 
@@ -16,9 +17,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PigPalaceDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PigPalaceDB")));
-
+builder.Services.AddAutoMapper(typeof(Program));    
 builder.Services.AddScoped<IFarmRepository, FarmRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();  
+builder.Services.AddScoped<IChuongHeoRepository, ChuongHeoRepository>();
 #endregion
 
 #region configure JWT
