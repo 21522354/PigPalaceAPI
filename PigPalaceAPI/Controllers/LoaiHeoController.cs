@@ -12,8 +12,8 @@ namespace PigPalaceAPI.Controllers
     [ApiController]
     public class LoaiHeoController : ControllerBase
     {
-        private PigPalaceDBContext _context;
-        private IMapper _mapper;
+        private readonly PigPalaceDBContext _context;
+        private readonly IMapper _mapper;
 
         public LoaiHeoController(PigPalaceDBContext context, IMapper mapper)
         {
