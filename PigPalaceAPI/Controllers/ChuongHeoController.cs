@@ -41,32 +41,46 @@ namespace PigPalaceAPI.Controllers
         [HttpPost("CreateChuongHeo")]
         public async Task<ActionResult<string>> CreateChuongHeo(ChuongHeoModel chuongHeoModel)
         {
-            var chuongHeo = _iMapper.Map<CHUONGHEO>(chuongHeoModel);    
-            chuongHeo.MaChuong = Guid.NewGuid();    
+            var chuongHeo = _iMapper.Map<CHUONGHEO>(chuongHeoModel);
+            chuongHeo.MaChuong = Guid.NewGuid();
             var result = await _chuongHeoRepository.CreateChuongHeo(chuongHeo);
-            if(result == "Farm not found")
+            if (result == "Farm not found")
             {
                 return BadRequest(result);
-            }   
+            }
             return Ok(result);
         }
 
         [HttpPut("UpdateChuongHeo")]
         public async Task<ActionResult<string>> UpdateChuongHeo(CHUONGHEO chuongHeo)
         {
-            var result = await _chuongHeoRepository.UpdateChuongHeo(chuongHeo);
-            if (result == null)
+            try
             {
-                return NotFound();
+                var result = await _chuongHeoRepository.UpdateChuongHeo(chuongHeo);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
             }
-            return Ok(result);
+            catch
+            {
+                return BadRequest("Can't change the ChuongHeoId");
+            }
         }
 
         [HttpDelete("DeleteChuongHeoByID/{id}")]
         public async Task<ActionResult<string>> DeleteChuongHeo(Guid id)
         {
-            var result = await _chuongHeoRepository.DeleteChuongHeo(id);
-            return Ok(result);
+            try
+            {
+                var result = await _chuongHeoRepository.DeleteChuongHeo(id);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Can't delete this ChuongHeo");
+            }
         }
     }
 }
