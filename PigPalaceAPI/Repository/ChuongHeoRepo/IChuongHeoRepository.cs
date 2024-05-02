@@ -4,7 +4,7 @@ namespace PigPalaceAPI.Repository.ChuongHeoRepo
 {
     public interface IChuongHeoRepository
     {
-        public Task<List<CHUONGHEO>> GetAllChuongHeo();
+        public Task<List<CHUONGHEO>> GetAllChuongHeo(Guid FarmId);
         public Task<CHUONGHEO> GetChuongHeoById(Guid id);
         public Task<string> CreateChuongHeo(CHUONGHEO chuongHeo);
         public Task<string> UpdateChuongHeo(CHUONGHEO chuongHeo);

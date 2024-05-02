@@ -20,10 +20,10 @@ namespace PigPalaceAPI.Controllers
             _iMapper = iMapper;
         }
 
-        [HttpGet("GetAllChuongHeo")]
-        public async Task<ActionResult<List<CHUONGHEO>>> GetAllChuongHeo()
+        [HttpGet("GetAllChuongHeo/{FarmId}")]
+        public async Task<ActionResult<List<CHUONGHEO>>> GetAllChuongHeo(Guid FarmId)
         {
-            var listChuongHeo = await _chuongHeoRepository.GetAllChuongHeo();
+            var listChuongHeo = await _chuongHeoRepository.GetAllChuongHeo(FarmId);
             return Ok(listChuongHeo);
         }
 

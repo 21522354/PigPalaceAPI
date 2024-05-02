@@ -36,9 +36,9 @@ namespace PigPalaceAPI.Repository.ChuongHeoRepo
             return "ChuongHeo deleted successfully";        
         }
 
-        public Task<List<CHUONGHEO>> GetAllChuongHeo()
+        public Task<List<CHUONGHEO>> GetAllChuongHeo(Guid FarmID)
         {
-            var listChuongHeo = _context.CHUONGHEOs.ToListAsync();      
+            var listChuongHeo = _context.CHUONGHEOs.Where(p => p.FarmID == FarmID).ToListAsync();      
             return listChuongHeo;   
         }
 
