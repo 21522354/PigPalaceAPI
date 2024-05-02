@@ -35,6 +35,11 @@ namespace PigPalaceAPI.Controllers
         [HttpGet("GetAllLoaiHeo/{FarmID}")]  
         public async Task<ActionResult<List<LOAIHEO>>> GetAllLoaiHeo(Guid FarmID)
         {
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);
+            if (farm == null)
+            {
+                return BadRequest("Farm not found");
+            }
             return Ok(await _context.LOAIHEOs.Where(p => p.FarmID == FarmID).ToListAsync());
         }
         [HttpGet("GetLoaiHeoByID/{id}")]
@@ -54,6 +59,11 @@ namespace PigPalaceAPI.Controllers
             if (_loaiHeo == null)
             {
                 return NotFound("LoaiHeo not found");
+            }
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == loaiHeo.FarmID);
+            if (farm == null)
+            {
+                return BadRequest("Farm not found");
             }
             _context.Entry(_loaiHeo).CurrentValues.SetValues(loaiHeo);  
             await _context.SaveChangesAsync();
