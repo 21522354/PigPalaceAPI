@@ -7,7 +7,7 @@ namespace PigPalaceAPI.Data.Entity
     public class HEO
     {
         [Key]
-        public Guid MaHeo { get; set; }     
+        public string MaHeo { get; set; }     
         public int MaLoaiHeo { get; set; }
         [ForeignKey("MaLoaiHeo")]   
         public virtual LOAIHEO LOAIHEO { get; set; }
@@ -19,12 +19,13 @@ namespace PigPalaceAPI.Data.Entity
         public virtual CHUONGHEO CHUONGHEO { get; set; }        
         public string GioiTinh { get; set; }
         public float TrongLuong { get; set; }
-        public Guid? MaHeoCha { get; set; }
-        public Guid? MaHeoMe { get; set; }
+        public string? MaHeoCha { get; set; }
+        public string? MaHeoMe { get; set; }
         public string TinhTrang { get; set; }
         public DateTime NgaySinh { get; set; }
         public string DonGiaNhap { get; set; }
         public DateTime LastModifyWeight { get; set; }
+        public DateTime NgayDenTrangTrai { get; set; }    
         public Guid FarmID { get; set; }    
     }
 }

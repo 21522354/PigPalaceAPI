@@ -29,17 +29,22 @@ namespace PigPalaceAPI.Controllers
             {
                 return BadRequest("Farm not found");
             }
+            var heocheck = await _context.HEOs.FirstOrDefaultAsync(x => x.MaHeo == heoModel.MaHeo);
+            if (heocheck != null)
+            {
+                return BadRequest("PigID already exists");
+            }
             var chuongHeo = await _context.CHUONGHEOs.FirstOrDefaultAsync(x => x.MaChuong == heoModel.MaChuong);
             if (chuongHeo == null)
             {
-                return BadRequest("Chuong heo not found");
+                return BadRequest("Cage not found");
             }
             if(heoModel.MaHeoCha != null)
             {
                 var heoCha = await _context.HEOs.FirstOrDefaultAsync(x => x.MaHeo == heoModel.MaHeoCha);    
                 if (heoCha == null)
                 {
-                    return BadRequest("Heo cha not found");
+                    return BadRequest("PigFather not found");
                 }
             }
             if(heoModel.MaHeoMe != null)
@@ -47,25 +52,24 @@ namespace PigPalaceAPI.Controllers
                 var heoMe = await _context.HEOs.FirstOrDefaultAsync(x => x.MaHeo == heoModel.MaHeoMe);    
                 if (heoMe == null)
                 {
-                    return BadRequest("Heo me not found");
+                    return BadRequest("PigMother not found");
                 }
             }
             var loaiHeo = await _context.LOAIHEOs.FindAsync(heoModel.MaLoaiHeo);
             if (loaiHeo == null)
             {
-                return BadRequest("Loai heo not found");
+                return BadRequest("PigType not found");
             }
             var giongHeo = await _context.GIONGHEOs.FindAsync(heoModel.MaGiongHeo);     
             if (giongHeo == null)
             {
-                return BadRequest("Giong heo not found");
+                return BadRequest("Breed not found");
             }
 
             // add new Heo
             try
             {
                 var heo = _mapper.Map<HEO>(heoModel);
-                heo.MaHeo = Guid.NewGuid();
                 _context.HEOs.Add(heo);
                 await _context.SaveChangesAsync();
                 return Ok("Heo created successfully");
@@ -84,10 +88,10 @@ namespace PigPalaceAPI.Controllers
                 return BadRequest("Farm not found");
             }
             var listHeo = await _context.HEOs.Where(p => p.FarmID == FarmID).ToListAsync();
-            return Ok(_mapper.Map<List<HeoModel2>>(listHeo));
+            return Ok(_mapper.Map<List<HeoModel>>(listHeo));
         }
         [HttpGet("GetHeoByID/{id}")]
-        public async Task<ActionResult<HeoModel>> GetHeoByID(Guid id)
+        public async Task<ActionResult<HeoModel>> GetHeoByID(string id)
         {
             var heo = await _context.HEOs.FindAsync(id);
             if (heo == null)
@@ -97,12 +101,12 @@ namespace PigPalaceAPI.Controllers
             return Ok(_mapper.Map<HeoModel>(heo));
         }
         [HttpPut("UpdateHeo")]
-        public async Task<ActionResult<string>> UpdateHeo(HeoModel2 heoModel)
+        public async Task<ActionResult<string>> UpdateHeo(HeoModel heoModel)
         {
             var heo = await _context.HEOs.FindAsync(heoModel.MaHeo);
             if (heo == null)
             {
-                return NotFound("Heo not found");
+                return NotFound("Pig not found");
             }
             var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == heoModel.FarmID);
             if (farm == null)
@@ -112,14 +116,14 @@ namespace PigPalaceAPI.Controllers
             var chuongHeo = await _context.CHUONGHEOs.FirstOrDefaultAsync(x => x.MaChuong == heoModel.MaChuong);
             if (chuongHeo == null)
             {
-                return BadRequest("Chuong heo not found");
+                return BadRequest("Cage not found");
             }
             if(heoModel.MaHeoCha != null)
             {
                 var heoCha = await _context.HEOs.FirstOrDefaultAsync(x => x.MaHeo == heoModel.MaHeoCha);    
                 if (heoCha == null)
                 {
-                    return BadRequest("Heo cha not found");
+                    return BadRequest("PigFather not found");
                 }
             }
             if(heoModel.MaHeoMe != null)
@@ -127,28 +131,28 @@ namespace PigPalaceAPI.Controllers
                 var heoMe = await _context.HEOs.FirstOrDefaultAsync(x => x.MaHeo == heoModel.MaHeoMe);    
                 if (heoMe == null)
                 {
-                    return BadRequest("Heo me not found");
+                    return BadRequest("PigMother not found");
                 }
             }
             var loaiHeo = await _context.LOAIHEOs.FindAsync(heoModel.MaLoaiHeo);
             if (loaiHeo == null)
             {
-                return BadRequest("Loai heo not found");
+                return BadRequest("PigType not found");
             }
             var giongHeo = await _context.GIONGHEOs.FindAsync(heoModel.MaGiongHeo);     
             if (giongHeo == null)
             {
-                return BadRequest("Giong heo not found");
+                return BadRequest("Breed not found");
             }
             try
             {
                 _context.Entry(heo).CurrentValues.SetValues(heoModel);
                 await _context.SaveChangesAsync();
-                return Ok("Heo updated successfully");
+                return Ok("Pig updated successfully");
             }
             catch
             {
-                return BadRequest("Can't update this Heo");  
+                return BadRequest("Can't update this Pig");  
             }
         }
         [HttpDelete("DeleteHeo/{id}")]
@@ -159,15 +163,15 @@ namespace PigPalaceAPI.Controllers
                 var heo = await _context.HEOs.FindAsync(id);
                 if (heo == null)
                 {
-                    return NotFound("Heo not found");
+                    return NotFound("Pig not found");
                 }
                 _context.HEOs.Remove(heo);
                 await _context.SaveChangesAsync();
-                return Ok("Heo deleted successfully");
+                return Ok("Pig deleted successfully");
             }
             catch
             {
-                return BadRequest("Can't delete this Heo");  
+                return BadRequest("Can't delete this Pig");  
             }
         }
     }

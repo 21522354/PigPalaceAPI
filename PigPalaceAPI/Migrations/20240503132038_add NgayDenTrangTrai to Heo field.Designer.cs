@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PigPalaceAPI.Data;
 
@@ -11,9 +12,11 @@ using PigPalaceAPI.Data;
 namespace PigPalaceAPI.Migrations
 {
     [DbContext(typeof(PigPalaceDBContext))]
-    partial class PigPalaceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240503132038_add NgayDenTrangTrai to Heo field")]
+    partial class addNgayDenTrangTraitoHeofield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,8 +79,9 @@ namespace PigPalaceAPI.Migrations
 
             modelBuilder.Entity("PigPalaceAPI.Data.Entity.HEO", b =>
                 {
-                    b.Property<string>("MaHeo")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("MaHeo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DonGiaNhap")
                         .IsRequired()
@@ -99,11 +103,11 @@ namespace PigPalaceAPI.Migrations
                     b.Property<int>("MaGiongHeo")
                         .HasColumnType("int");
 
-                    b.Property<string>("MaHeoCha")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("MaHeoCha")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("MaHeoMe")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid?>("MaHeoMe")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MaLoaiHeo")
                         .HasColumnType("int");
