@@ -17,7 +17,7 @@ namespace PigPalaceAPI.Controllers
             _userRepository = userRepository;   
         }
         [HttpGet("GetUserByID")]    
-        public async Task<IActionResult> GetUserByID(int ID)
+        public async Task<IActionResult> GetUserByID(Guid ID)
         {
             var user = await _userRepository.GetUserByID(ID);
             if (user == null)
@@ -37,7 +37,7 @@ namespace PigPalaceAPI.Controllers
             return Ok(users);   
         }
         [HttpDelete("DeleteUser")]  
-        public async Task<IActionResult> DeleteUser(int userID)
+        public async Task<IActionResult> DeleteUser(Guid userID)
         {
             var result = await _userRepository.DeleteUser(userID);
             if (result == "User does not exist")
@@ -47,7 +47,7 @@ namespace PigPalaceAPI.Controllers
             return Ok(result);  
         }
         [HttpPut("UpdateUser")]    
-        public async Task<IActionResult> UpdateUser(UserModel userModel, int UserID)
+        public async Task<IActionResult> UpdateUser(UserModel userModel, Guid UserID)
         {
             var result = await _userRepository.UpdateUser(userModel, UserID);
             if (result == "Farm does not exist" || result == "User update failed" || result == "User does not exist")
@@ -57,7 +57,7 @@ namespace PigPalaceAPI.Controllers
             return Ok(result);  
         }
         [HttpPost("SignIn")]
-        public async Task<IActionResult> SignIn(int UserID, string PassWord)
+        public async Task<IActionResult> SignIn(Guid UserID, string PassWord)
         {
             var result = await _userRepository.SignIn(UserID, PassWord);
             if (result.Message == "Invalid Credentials")

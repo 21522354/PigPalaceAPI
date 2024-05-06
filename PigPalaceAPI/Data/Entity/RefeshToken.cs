@@ -8,8 +8,8 @@ namespace PigPalaceAPI.Data.Entity
     {
         [Key]
         public Guid ID { get; set; }
-        public int UserID { get; set; }
-        [ForeignKey(nameof(UserID))]
+        public Guid UserID { get; set; }
+        [ForeignKey("UserID")]
         public User CurrentUser { get; set; }
         public string Token { get; set; }
         public string JwtID { get; set; }

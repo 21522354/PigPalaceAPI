@@ -20,7 +20,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
             _context = context;
             _configuration = configuration;
         }
-        public async Task<string> DeleteUser(int userID)
+        public async Task<string> DeleteUser(Guid userID)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == userID);  
             if (user == null)
@@ -38,7 +38,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
             return users;   
         }
 
-        public async Task<User> GetUserByID(int ID)
+        public async Task<User> GetUserByID(Guid ID)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == ID);
             return user;
@@ -226,7 +226,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
         }
         #endregion
 
-        public async Task<APIRespond> SignIn(int userID, string password)
+        public async Task<APIRespond> SignIn(Guid userID, string password)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == userID && x.PassWord == password);
             if (user == null)
@@ -261,6 +261,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 }   
                 var newUser = new User
                 {
+                    UserID = Guid.NewGuid(),
                     FarmID = user.FarmID,
                     Name = user.Name,
                     PassWord = user.PassWord,
@@ -285,7 +286,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
             
         }
 
-        public async Task<string> UpdateUser(UserModel user, int userID)
+        public async Task<string> UpdateUser(UserModel user, Guid userID)
         {
             try
             {

@@ -12,8 +12,8 @@ using PigPalaceAPI.Data;
 namespace PigPalaceAPI.Migrations
 {
     [DbContext(typeof(PigPalaceDBContext))]
-    [Migration("20240417135551_adjust table PigFarm 2")]
-    partial class adjusttablePigFarm2
+    [Migration("20240506120958_init DB")]
+    partial class initDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,172 @@ namespace PigPalaceAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("PigPalaceAPI.Data.Entity.CHUONGHEO", b =>
+                {
+                    b.Property<Guid>("MaChuong")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FarmID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GhiChu")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SoLuongHeo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SucChuaToiDa")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TinhTrang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaChuong");
+
+                    b.ToTable("CHUONGHEO");
+                });
+
+            modelBuilder.Entity("PigPalaceAPI.Data.Entity.DOITAC", b =>
+                {
+                    b.Property<int>("MaDoiTac")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaDoiTac"));
+
+                    b.Property<string>("DiaChi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("FarmID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SoDienThoai")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenCongTy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenDoiTac")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaDoiTac");
+
+                    b.ToTable("DOITACs");
+                });
+
+            modelBuilder.Entity("PigPalaceAPI.Data.Entity.GIONGHEO", b =>
+                {
+                    b.Property<int>("MaGiongHeo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaGiongHeo"));
+
+                    b.Property<Guid>("FarmID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenGiongHeo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaGiongHeo");
+
+                    b.ToTable("GIONGHEO");
+                });
+
+            modelBuilder.Entity("PigPalaceAPI.Data.Entity.HEO", b =>
+                {
+                    b.Property<string>("MaHeo")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DonGiaNhap")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("FarmID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("GioiTinh")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModifyWeight")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("MaChuong")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaGiongHeo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaHeoCha")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaHeoMe")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaLoaiHeo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayDenTrangTrai")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("NgaySinh")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TinhTrang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("TrongLuong")
+                        .HasColumnType("real");
+
+                    b.HasKey("MaHeo");
+
+                    b.HasIndex("MaChuong");
+
+                    b.HasIndex("MaGiongHeo");
+
+                    b.HasIndex("MaLoaiHeo");
+
+                    b.ToTable("HEO");
+                });
+
+            modelBuilder.Entity("PigPalaceAPI.Data.Entity.LOAIHEO", b =>
+                {
+                    b.Property<int>("MaLoaiHeo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaLoaiHeo"));
+
+                    b.Property<Guid>("FarmID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MoTa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TenLoaiHeo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaLoaiHeo");
+
+                    b.ToTable("LOAIHEO");
+                });
 
             modelBuilder.Entity("PigPalaceAPI.Data.Entity.PigFarm", b =>
                 {
@@ -83,8 +249,8 @@ namespace PigPalaceAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ID");
 
@@ -142,11 +308,9 @@ namespace PigPalaceAPI.Migrations
 
             modelBuilder.Entity("PigPalaceAPI.Data.Entity.User", b =>
                 {
-                    b.Property<int>("UserID")
+                    b.Property<Guid>("UserID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserID"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
@@ -185,6 +349,33 @@ namespace PigPalaceAPI.Migrations
                     b.HasIndex("RoleID");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("PigPalaceAPI.Data.Entity.HEO", b =>
+                {
+                    b.HasOne("PigPalaceAPI.Data.Entity.CHUONGHEO", "CHUONGHEO")
+                        .WithMany()
+                        .HasForeignKey("MaChuong")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PigPalaceAPI.Data.Entity.GIONGHEO", "GIONGHEO")
+                        .WithMany()
+                        .HasForeignKey("MaGiongHeo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PigPalaceAPI.Data.Entity.LOAIHEO", "LOAIHEO")
+                        .WithMany()
+                        .HasForeignKey("MaLoaiHeo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CHUONGHEO");
+
+                    b.Navigation("GIONGHEO");
+
+                    b.Navigation("LOAIHEO");
                 });
 
             modelBuilder.Entity("PigPalaceAPI.Data.Entity.RefreshToken", b =>

@@ -5,7 +5,7 @@ namespace PigPalaceAPI.Data.Entity
     public class User
     {
         [Key]
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
         public Guid FarmID { get; set; }
         [Required]
         public string Name { get; set; }
