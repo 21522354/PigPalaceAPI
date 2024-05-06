@@ -11,6 +11,6 @@ namespace PigPalaceAPI.Repository.FarmRepo
         public Task<APIRespond> SignUp(UserModel user);      
         public Task<string> UpdateUser(UserModel user, Guid userID);    
         public Task<string> DeleteUser(Guid userID);
-        public Task<APIRespond> RenewToken(TokenModel tokenModel);
+        public Task<APIRespond2> RenewToken(TokenModel tokenModel);
     }
 }

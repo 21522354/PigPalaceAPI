@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PigPalaceAPI.Data.Entity
 {
@@ -17,7 +18,8 @@ namespace PigPalaceAPI.Data.Entity
         public string? PhoneNumber { get; set; }
         public string? Sex { get; set; }
         public float CoefficientsSalary { get; set; }
-        public string? RoleID { get; set; }  
+        public string? RoleID { get; set; }
+        [ForeignKey("RoleID")]
         public virtual Roles? Role { get; set; } 
     }
 }

@@ -103,7 +103,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 return refreshToken;
             }
         }
-        public async Task<APIRespond> RenewToken(TokenModel model)
+        public async Task<APIRespond2> RenewToken(TokenModel model)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
             var secretKey = _configuration["AppSettings:SecretKey"];
@@ -133,7 +133,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                     var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
                     if (result == false)
                     {
-                        return new APIRespond
+                        return new APIRespond2
                         {
                             Status = false,
                             Message = "Invalid token"
@@ -146,7 +146,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 var expireDate = UnixTimeStampToDateTime(utcExpiryDate);
                 if ((DateTime)expireDate > DateTime.UtcNow)
                 {
-                    return new APIRespond
+                    return new APIRespond2
                     {
                         Status = false,
                         Message = "This token has not expired yet"
@@ -156,7 +156,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == model.RefreshToken);
                 if (storedToken == null)
                 {
-                    return new APIRespond
+                    return new APIRespond2
                     {
                         Status = false,
                         Message = "Refresh token not found"
@@ -165,7 +165,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 // Kiểm tra refresh token đã sử dụng chưa
                 if (storedToken.IsUsed)
                 {
-                    return new APIRespond
+                    return new APIRespond2
                     {
                         Status = false,
                         Message = "Refresh token has been used"
@@ -174,7 +174,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 // Kiểm tra đã bị thu hồi chưa
                 if (storedToken.IsRevoked)
                 {
-                    return new APIRespond
+                    return new APIRespond2
                     {
                         Status = false,
                         Message = "Refresh token has been revoked"
@@ -184,7 +184,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 var jti = tokenVerification.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
                 if (storedToken.JwtID != jti)
                 {
-                    return new APIRespond
+                    return new APIRespond2
                     {
                         Status = false,
                         Message = "Refresh token does not match this JWT token"
@@ -201,7 +201,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 var Token = await GenerateToken(user);
 
 
-                return new APIRespond
+                return new APIRespond2
                 {
                     Status = true,
                     Message = "Renew Token Success",
@@ -210,7 +210,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
             }
             catch
             {
-                return new APIRespond
+                return new APIRespond2
                 {
                     Status = false,
                     Message = "SomeThing went wrong"
