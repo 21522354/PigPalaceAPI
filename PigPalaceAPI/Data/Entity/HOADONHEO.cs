@@ -15,10 +15,11 @@ namespace PigPalaceAPI.Data.Entity
         public string TrangThai { get; set; }   
         public string? GhiChu { get; set; }
         public float TienTrenDVT { get; set; }
-        public int MaDoiTac { get; set; }
-
-        [ForeignKey("MaDoiTac")]
-        public virtual DOITAC DOITAC { get; set; }
+        public string TenCongTy { get; set; }
+        public string TenKhachHang { get; set; }
+        public string DiaChi { get; set; }
+        public string SDT { get; set; }
+        public string Email { get; set; }
         public Guid UserID { get; set; }
         [ForeignKey("UserID")]  
         public virtual User User { get; set; }

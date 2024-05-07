@@ -23,7 +23,7 @@ namespace PigPalaceAPI.Data.Entity
         public string? MaHeoMe { get; set; }
         public bool IsTrongTrangTrai { get; set; }
         public DateTime NgaySinh { get; set; }
-        public string? DonGiaNhap { get; set; }
+        public float? DonGiaNhap { get; set; }
         public DateTime NgayDenTrangTrai { get; set; }    
         public Guid FarmID { get; set; }    
     }

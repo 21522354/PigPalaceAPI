@@ -87,7 +87,7 @@ namespace PigPalaceAPI.Controllers
             {
                 return BadRequest("Farm not found");
             }
-            var listHeo = await _context.HEOs.Where(p => p.FarmID == FarmID).ToListAsync();
+            var listHeo = await _context.HEOs.Where(p => p.FarmID == FarmID && p.IsTrongTrangTrai == true).ToListAsync();
             return Ok(_mapper.Map<List<HeoModel>>(listHeo));
         }
         [HttpGet("GetHeoByID/{id}")]
