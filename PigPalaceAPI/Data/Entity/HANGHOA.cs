@@ -7,6 +7,7 @@ namespace PigPalaceAPI.Data.Entity
         [Key]
         public int ID { get; set; }
         public string TenHangHoa { get; set; }
+        public string LoaiHangHoa { get; set; } 
         public float TonKho { get; set; }
         public float GiaTriToiThieu { get; set; }
         public float TienMuaTrenMotDonVi { get; set; }

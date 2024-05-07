@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PigPalaceAPI.Data;
 
@@ -11,9 +12,11 @@ using PigPalaceAPI.Data;
 namespace PigPalaceAPI.Migrations
 {
     [DbContext(typeof(PigPalaceDBContext))]
-    partial class PigPalaceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240507150950_add LoaiHangHoa Field")]
+    partial class addLoaiHangHoaField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,6 +221,10 @@ namespace PigPalaceAPI.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("LoaiHangHoa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LoaiHoaDon")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
