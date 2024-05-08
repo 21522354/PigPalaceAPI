@@ -69,7 +69,9 @@ namespace PigPalaceAPI.Controllers
                 await _context.SaveChangesAsync();
                 foreach (var item in listHeoNhap)
                 {
-                    _context.HEOs.Add(_mapper.Map<HEO>(item));
+                    var heo = _mapper.Map<HEO>(item);
+                    heo.IsTrongTrangTrai = false;
+                    _context.HEOs.Add(heo);
                     CT_HOADONHEO cT_HOADONHEO = new CT_HOADONHEO();
                     cT_HOADONHEO.MaHoaDon = hoadon.MaHoaDon;
                     cT_HOADONHEO.FarmID = FarmID;
