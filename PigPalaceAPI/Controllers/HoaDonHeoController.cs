@@ -12,15 +12,25 @@ namespace PigPalaceAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HoaDonNhapHeoController : ControllerBase
+    public class HoaDonHeoController : ControllerBase
     {
         private readonly PigPalaceDBContext _context;
         private readonly IMapper _mapper;
 
-        public HoaDonNhapHeoController(PigPalaceDBContext context, IMapper mapper)
+        public HoaDonHeoController(PigPalaceDBContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
+        }
+        [HttpGet("GetListHoaDonHeo")]   
+        public async Task<IActionResult> GetListHoaDonHeo(Guid FarmID)
+        {
+            if (_context.PigFarms.Find(FarmID) == null)
+            {
+                return BadRequest("Farm not found");
+            }
+            var listHoaDon = await _context.HOADONHEOs.Where(x => x.FarmID == FarmID).ToListAsync();
+            return Ok(listHoaDon);
         }
         [HttpGet("GetListPhieuNhap")]
         public async Task<IActionResult> GetListPhieuNhap(Guid FarmID)
@@ -129,6 +139,69 @@ namespace PigPalaceAPI.Controllers
             return Ok("Invoice deleted successfully");  
         }
 
+        [HttpPost("CreatePhieuXuatHeo")]    
+        public async Task<IActionResult> CreatePhieuXuat(DateTime NgayLap, DateTime NgayBan, string Note, Guid FarmID, Guid UserId, float TienTrenDVT, float TongTien ,string TenCongTy, string TenDoiTac, string DiaChi, string SoDienThoai, string Email, [FromBody] List<HeoXuatModel> listHeoXuat)
+        {
+            try
+            {
+                HOADONHEO hoadon = new HOADONHEO();
+                hoadon.MaHoaDon = GenerateRandomString(10);
+                hoadon.LoaiHoaDon = "Phiếu xuất heo";
+                hoadon.SoLuong = listHeoXuat.Count;
+                hoadon.TongTien = TongTien;
+                hoadon.NgayLap = NgayLap;
+                hoadon.TrangThai = "Progress";
+                hoadon.GhiChu = Note;
+                hoadon.TienTrenDVT = TienTrenDVT;
+                hoadon.TenCongTy = TenCongTy;
+                hoadon.TenKhachHang = TenDoiTac;
+                hoadon.DiaChi = DiaChi;
+                hoadon.SDT = SoDienThoai;
+                hoadon.Email = Email;
+                hoadon.FarmID = FarmID;
+                hoadon.UserID = UserId;
+
+                _context.HOADONHEOs.Add(hoadon);
+                await _context.SaveChangesAsync();
+                foreach (var item in listHeoXuat)
+                {
+                    CT_HOADONHEO cT_HOADONHEO = new CT_HOADONHEO();
+                    cT_HOADONHEO.MaHoaDon = hoadon.MaHoaDon;
+                    cT_HOADONHEO.FarmID = FarmID;
+                    cT_HOADONHEO.MaHeo = item.Maheo;
+                    _context.CT_HOADONHEOs.Add(cT_HOADONHEO);
+                    await _context.SaveChangesAsync();
+                }
+                return Ok("Invoice create successfully");
+            }
+            catch
+            {
+                return BadRequest("Invoice create failed");
+            }
+            
+        }
+        [HttpPut("XacNhanPhieuXuatHeo")]
+        public async Task<IActionResult> XacNhanPhieuXuatHeo(string maHoaDon)
+        {
+            var hoadon = await _context.HOADONHEOs.Where(x => x.MaHoaDon == maHoaDon).FirstOrDefaultAsync();
+            if (hoadon == null)
+            {
+                return BadRequest("Invoice not found");
+            }
+            hoadon.TrangThai = "Paid";
+            var listCTHeo = await _context.CT_HOADONHEOs.Where(x => x.MaHoaDon == maHoaDon).ToListAsync();
+            foreach (var item in listCTHeo)
+            {
+                HEO? heo = await _context.HEOs.Where(x => x.MaHeo == item.MaHeo && x.FarmID == hoadon.FarmID).FirstOrDefaultAsync();
+                if(heo == null)
+                {
+                    return BadRequest("Pig not found");
+                }
+                heo.IsTrongTrangTrai = false;    
+            }
+            await _context.SaveChangesAsync();
+            return Ok("Invoice confirmed successfully");
+        }
         public static string GenerateRandomString(int length)
         {
             const string prefix = "HDH"; // Các ký tự đầu tiên cố định
