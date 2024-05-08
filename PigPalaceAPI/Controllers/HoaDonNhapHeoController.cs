@@ -86,7 +86,7 @@ namespace PigPalaceAPI.Controllers
             
         }
 
-        [HttpPost("XacNhanHoaDonHeo")]  
+        [HttpPut("XacNhanHoaDonHeo")]  
         public async Task<IActionResult> XacNhanPhieuNhap(string MaHoaDon)
         {
             var hoadon = await _context.HOADONHEOs.Where(x => x.MaHoaDon == MaHoaDon).FirstOrDefaultAsync();

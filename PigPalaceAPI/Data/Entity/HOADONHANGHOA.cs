@@ -17,6 +17,7 @@ namespace PigPalaceAPI.Data.Entity
         public string TrangThai { get; set; }   
         public string? GhiChu { get; set; }
         public float TienTrenDVT { get; set; }
+        public string DonViTinh { get; set; }   
         public float TongTien { get; set; }
         public string TenCongTy { get; set; }
         public string TenKhachHang { get; set; }

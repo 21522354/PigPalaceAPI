@@ -48,7 +48,7 @@ namespace PigPalaceAPI.Controllers
                 return BadRequest("Invoice create failed");
             }
         }
-        [HttpPost("UpdateHoaDonHangHoa")]
+        [HttpPut("UpdateHoaDonHangHoa")]
         public async Task<IActionResult> UpdateHoaDonHangHoa(string maHoaDon, HoaDonHangHoaModel2 hoaDonHangHoa)
         {
             var hoaDon = await _context.HOADONHANGHOAs.FirstOrDefaultAsync(x => x.MaHoaDon == maHoaDon);
@@ -71,6 +71,43 @@ namespace PigPalaceAPI.Controllers
                 hoaDon.DiaChi = hoaDonHangHoa.DiaChi;
                 hoaDon.SDT = hoaDonHangHoa.SDT;
                 hoaDon.Email = hoaDonHangHoa.Email;
+                await _context.SaveChangesAsync();
+                return Ok("Update invoice successfully");
+            }
+            catch
+            {
+                return BadRequest("Can't update invoice");
+            }
+        }
+        [HttpPut("XacNhanHoaDonHangHoa")]  
+        public async Task<IActionResult> UpdateStatusHoaDonHangHoa(string maHoaDon)
+        {
+            var HoaDon = await _context.HOADONHANGHOAs.FirstOrDefaultAsync(x => x.MaHoaDon == maHoaDon);
+            if (HoaDon == null)
+            {
+                return BadRequest("Invoice not found");
+            }
+            try
+            {
+                HoaDon.TrangThai = "Paid";
+
+                var hangHoa = await _context.HANGHOAs.Where(x => x.TenHangHoa == HoaDon.TenHangHoa).FirstOrDefaultAsync();
+                if(hangHoa == null)
+                {
+                    HANGHOA newHangHoa = new HANGHOA();
+                    newHangHoa.TenHangHoa = HoaDon.TenHangHoa;  
+                    newHangHoa.LoaiHangHoa = HoaDon.LoaiHangHoa;
+                    newHangHoa.TonKho = HoaDon.SoLuong;
+                    newHangHoa.TienMuaTrenMotDonVi = HoaDon.TienTrenDVT;
+                    newHangHoa.FarmID = HoaDon.FarmID;
+                    newHangHoa.DonViTinh = HoaDon.DonViTinh;    
+
+                    _context.HANGHOAs.Add(newHangHoa);
+                }
+                else
+                {
+                    hangHoa.TonKho += HoaDon.SoLuong;
+                }
                 await _context.SaveChangesAsync();
                 return Ok("Update invoice successfully");
             }
