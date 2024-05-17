@@ -8,12 +8,10 @@ namespace PigPalaceAPI.Data.Entity
     {
         [Key]
         public string MaHeo { get; set; }     
-        public int MaLoaiHeo { get; set; }
-        [ForeignKey("MaLoaiHeo")]   
-        public virtual LOAIHEO LOAIHEO { get; set; }
         public int MaGiongHeo { get; set; }
         [ForeignKey("MaGiongHeo")]      
         public virtual GIONGHEO GIONGHEO { get; set; }
+        public bool IsThuanChung { get; set; }  
         public Guid MaChuong { get; set; }
         [ForeignKey("MaChuong")]    
         public virtual CHUONGHEO CHUONGHEO { get; set; }        

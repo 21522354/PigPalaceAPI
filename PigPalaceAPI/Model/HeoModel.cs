@@ -6,7 +6,6 @@ namespace PigPalaceAPI.Model
     public class HeoModel
     {
         public string MaHeo { get; set; }
-        public int MaLoaiHeo { get; set; }
         public int MaGiongHeo { get; set; }
         public Guid MaChuong { get; set; }
         public string GioiTinh { get; set; }

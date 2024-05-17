@@ -9,7 +9,6 @@ namespace PigPalaceAPI.Utilities
         public ApplicationMapper()
         {
             CreateMap<CHUONGHEO, ChuongHeoModel>().ReverseMap();
-            CreateMap<LOAIHEO, LoaiHeoModel>().ReverseMap();    
             CreateMap<GIONGHEO, GiongHeoModel>().ReverseMap();   
             CreateMap<HEO, HeoModel>().ReverseMap();       
             CreateMap<HOADONHANGHOA, HoaDonHangHoaModel>().ReverseMap();

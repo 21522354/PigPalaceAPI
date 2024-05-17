@@ -55,11 +55,6 @@ namespace PigPalaceAPI.Controllers
                     return BadRequest("PigMother not found");
                 }
             }
-            var loaiHeo = await _context.LOAIHEOs.FindAsync(heoModel.MaLoaiHeo);
-            if (loaiHeo == null)
-            {
-                return BadRequest("PigType not found");
-            }
             var giongHeo = await _context.GIONGHEOs.FindAsync(heoModel.MaGiongHeo);     
             if (giongHeo == null)
             {
@@ -133,11 +128,6 @@ namespace PigPalaceAPI.Controllers
                 {
                     return BadRequest("PigMother not found");
                 }
-            }
-            var loaiHeo = await _context.LOAIHEOs.FindAsync(heoModel.MaLoaiHeo);
-            if (loaiHeo == null)
-            {
-                return BadRequest("PigType not found");
             }
             var giongHeo = await _context.GIONGHEOs.FindAsync(heoModel.MaGiongHeo);     
             if (giongHeo == null)

@@ -16,7 +16,6 @@ namespace PigPalaceAPI.Data
         public DbSet<HEO> HEOs { get; set; }        
         public DbSet<CHUONGHEO> CHUONGHEOs { get; set; }    
         public DbSet<GIONGHEO> GIONGHEOs { get; set; }
-        public DbSet<LOAIHEO> LOAIHEOs { get; set; }       
         public DbSet<HOADONHEO> HOADONHEOs { get; set; }
         public DbSet<CT_HOADONHEO> CT_HOADONHEOs { get; set; }
         public DbSet<HOADONHANGHOA> HOADONHANGHOAs { get; set; }

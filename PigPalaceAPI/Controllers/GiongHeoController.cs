@@ -21,7 +21,7 @@ namespace PigPalaceAPI.Controllers
             _mapper = mapper;
         }
         [HttpPost("CreateGiongHeo")]
-        public async Task<ActionResult<string>> CreateGiongHeo(GiongHeoModel giongHeoModel)
+        public async Task<IActionResult> CreateGiongHeo(GiongHeoModel giongHeoModel)
         {
             var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == giongHeoModel.FarmID);
             if (farm == null)
@@ -33,7 +33,7 @@ namespace PigPalaceAPI.Controllers
             return Ok("Giong heo created successfully");
         }
         [HttpGet("GetAllGiongHeo/{FarmID}")]
-        public async Task<ActionResult<List<LOAIHEO>>> GetAllGiongHeo(Guid FarmID)
+        public async Task<IActionResult> GetAllGiongHeo(Guid FarmID)
         {
             var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);    
             if (farm == null)
@@ -43,7 +43,7 @@ namespace PigPalaceAPI.Controllers
             return Ok(await _context.GIONGHEOs.Where(p => p.FarmID == FarmID).ToListAsync());
         }
         [HttpGet("GetGiongHeoByID/{id}")]
-        public async Task<ActionResult<LOAIHEO>> GetGiongHeoByID(int id)
+        public async Task<IActionResult> GetGiongHeoByID(int id)
         {
             var giongHeo = await _context.GIONGHEOs.FindAsync(id);
             if (giongHeo == null)
@@ -53,7 +53,7 @@ namespace PigPalaceAPI.Controllers
             return Ok(giongHeo);
         }
         [HttpPut("UpdateGiongHeo")]
-        public async Task<ActionResult<string>> UpdateGiongHeo(GIONGHEO giongHeo)
+        public async Task<IActionResult> UpdateGiongHeo(GIONGHEO giongHeo)
         {
             var _giongHeo = await _context.GIONGHEOs.FindAsync(giongHeo.MaGiongHeo);
             if (_giongHeo == null)
@@ -70,7 +70,7 @@ namespace PigPalaceAPI.Controllers
             return Ok("GiongHeo updated successfully");
         }
         [HttpDelete("DeleteGiongHeo/{id}")]
-        public async Task<ActionResult<string>> DeleteLoaiHeo(int id)
+        public async Task<IActionResult> DeleteGiongHeo(int id)
         {
             try
             {

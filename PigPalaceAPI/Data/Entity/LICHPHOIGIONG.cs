@@ -11,7 +11,6 @@ namespace PigPalaceAPI.Data.Entity
         public string MaHeoNai { get; set; }
         [ForeignKey("MaHeoNai")]
         public virtual HEO HEONAI { get; set; }
-
         public string MaHeoDuc { get; set; }
         [ForeignKey("MaHeoDuc")]
         public virtual HEO HEODUC { get; set; }
