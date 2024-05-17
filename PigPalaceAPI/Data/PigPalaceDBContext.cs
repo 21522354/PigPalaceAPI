@@ -21,6 +21,7 @@ namespace PigPalaceAPI.Data
         public DbSet<CT_HOADONHEO> CT_HOADONHEOs { get; set; }
         public DbSet<HOADONHANGHOA> HOADONHANGHOAs { get; set; }
         public DbSet<HANGHOA> HANGHOAs { get; set; }
+        public DbSet<Account> Accounts { get; set; }    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

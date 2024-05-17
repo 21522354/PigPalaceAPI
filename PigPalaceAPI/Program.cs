@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<PigPalaceDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("PigPalaceDB")));
 builder.Services.AddAutoMapper(typeof(Program));    
-builder.Services.AddScoped<IFarmRepository, FarmRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();  
 builder.Services.AddScoped<IChuongHeoRepository, ChuongHeoRepository>();
 #endregion

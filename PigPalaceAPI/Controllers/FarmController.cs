@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PigPalaceAPI.Data;
+using PigPalaceAPI.Data.Entity;
 using PigPalaceAPI.Repository.FarmRepo;
 
 namespace PigPalaceAPI.Controllers
@@ -8,65 +11,43 @@ namespace PigPalaceAPI.Controllers
     [ApiController]
     public class FarmController : ControllerBase
     {
-        private readonly IFarmRepository _farmRepository;
+        private readonly PigPalaceDBContext _context;
 
-        public FarmController(IFarmRepository farmRepository)
+        public FarmController(PigPalaceDBContext context)
         {
-            _farmRepository = farmRepository;
+            _context = context;
         }
 
-        [HttpPost("NormalSignIn")]
-        public async Task<IActionResult> NormalSignIn(string Gmail, string PassWord)
+        [HttpGet("GetFarm")]
+        public async Task<IActionResult> GetFarm(Guid AccountID)
         {
-            var result = await _farmRepository.NormalSignIn(Gmail, PassWord);
-            if(result == "Invalid Credentials")
+            var listFarm = await _context.PigFarms.Where(p => p.AccountID == AccountID).ToListAsync();
+            return Ok(listFarm);
+        }
+        [HttpPost("CreateFarm")]
+        public async Task<IActionResult> CreateFarm(Guid AccountID, string name)
+        {
+            PigFarm farm = new PigFarm
             {
-                return BadRequest(result);
-            }
-            return Ok(result);
+                FarmID = Guid.NewGuid(),
+                Name = name,
+                AccountID = AccountID
+            };
+            await _context.PigFarms.AddAsync(farm);
+            await _context.SaveChangesAsync();
+            return Ok(farm.FarmID.ToString());  
         }
-
-        [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp(string Name, string Gmail, string PassWord)
-        {
-            var result = await _farmRepository.SignUp(Name, Gmail, PassWord);
-            if(result == "Email already exists")
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
-
-        [HttpPost("GoogleSignIn")]
-        public async Task<IActionResult> GoogleSignIn(string GoogleID)
-        {
-            var result = await _farmRepository.GoogleSignIn(GoogleID);
-            if(result == "Invalid Credentials")
-            {
-                return BadRequest(result);
-            }
-            return Ok(result);
-        }
-
-        [HttpPost("FbSignIn")]
-        public async Task<IActionResult> FbSignIn(string FBID)
-        {
-            var result = await _farmRepository.FbSignIn(FBID);
-            if(result == "Invalid Credentials")
-            {
-                return BadRequest(result);
-            }   
-            return Ok(result);
-        }
-        [HttpPost("ChangeName")]    
+        [HttpPut("ChangeName")]    
         public async Task<IActionResult> ChangeName(Guid FarmID, string Name)
         {
-            var result = await _farmRepository.ChangeName(FarmID, Name);
-            if(result == "Farm not found")
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);
+            if(farm == null)
             {
-                return BadRequest(result);
+                return BadRequest("Farm not found");    
             }
-            return Ok(result);
+            farm.Name = Name;
+            await _context.SaveChangesAsync();  
+            return Ok("Change name successfully");
         }
     }
 }
