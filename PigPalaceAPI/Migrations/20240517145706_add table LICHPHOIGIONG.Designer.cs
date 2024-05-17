@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PigPalaceAPI.Data;
 
@@ -11,9 +12,11 @@ using PigPalaceAPI.Data;
 namespace PigPalaceAPI.Migrations
 {
     [DbContext(typeof(PigPalaceDBContext))]
-    partial class PigPalaceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20240517145706_add table LICHPHOIGIONG")]
+    partial class addtableLICHPHOIGIONG
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -375,9 +378,6 @@ namespace PigPalaceAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("FarmID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("GhiChu")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -389,6 +389,9 @@ namespace PigPalaceAPI.Migrations
                     b.Property<string>("LoaiPhoiGiong")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MaGiongHeo")
+                        .HasColumnType("int");
 
                     b.Property<int?>("MaGiongHeoDuc")
                         .HasColumnType("int");
@@ -438,7 +441,7 @@ namespace PigPalaceAPI.Migrations
 
                     b.HasKey("MaLich");
 
-                    b.HasIndex("MaGiongHeoDuc");
+                    b.HasIndex("MaGiongHeo");
 
                     b.HasIndex("MaHeoDuc");
 
@@ -692,7 +695,9 @@ namespace PigPalaceAPI.Migrations
                 {
                     b.HasOne("PigPalaceAPI.Data.Entity.GIONGHEO", "GIONGHEODUC")
                         .WithMany()
-                        .HasForeignKey("MaGiongHeoDuc");
+                        .HasForeignKey("MaGiongHeo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PigPalaceAPI.Data.Entity.HEO", "HEODUC")
                         .WithMany()
