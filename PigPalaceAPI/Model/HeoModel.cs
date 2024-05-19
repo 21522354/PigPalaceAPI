@@ -12,6 +12,7 @@ namespace PigPalaceAPI.Model
         public float TrongLuong { get; set; }
         public string? MaHeoCha { get; set; }
         public string? MaHeoMe { get; set; }
+        public bool IsThuanChung { get; set; }  
         public DateTime NgaySinh { get; set; }
         public float? DonGiaNhap { get; set; }
         public DateTime NgayDenTrangTrai { get; set; }

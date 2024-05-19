@@ -32,8 +32,8 @@ namespace PigPalaceAPI.Data.Entity
         public int? SoHeoDuc { get; set; }
         public int? SoHeoChet { get; set; }
         public int? SoHeoTat { get; set; }
-        public string NguyenNhanThatBai { get; set; }
-        public string CachGiaiQuyet { get; set; }
-        public string GhiChuTaiSaoThatBai { get; set; }     
+        public string? NguyenNhanThatBai { get; set; }
+        public string? CachGiaiQuyet { get; set; }
+        public string? GhiChuTaiSaoThatBai { get; set; }     
     }
 }

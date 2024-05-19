@@ -48,7 +48,7 @@ namespace PigPalaceAPI.Controllers
             {
                 return BadRequest(result);
             }
-            return Ok(result);
+            return Ok(chuongHeo.MaChuong.ToString());
         }
 
         [HttpPut("UpdateChuongHeo")]

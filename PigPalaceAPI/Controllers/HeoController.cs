@@ -95,6 +95,18 @@ namespace PigPalaceAPI.Controllers
             }
             return Ok(_mapper.Map<HeoModel>(heo));
         }
+        [HttpGet("GetListHeoDuc")]
+        public async Task<IActionResult> GetListHeoDuc(Guid FarmId)
+        {
+            var listHeoDuc = await _context.HEOs.Where(p => p.FarmID == FarmId && p.GioiTinh == "Đực").ToListAsync();
+            return Ok(_mapper.Map<List<HeoModel>>(listHeoDuc));
+        }
+        [HttpGet("GetListHeoCai")]
+        public async Task<IActionResult> GetListHeoCai(Guid FarmId)
+        {
+            var listHeoCai = await _context.HEOs.Where(p => p.FarmID == FarmId && p.GioiTinh == "Cái").ToListAsync();
+            return Ok(_mapper.Map<List<HeoModel>>(listHeoCai));
+        }
         [HttpPut("UpdateHeo")]
         public async Task<ActionResult<string>> UpdateHeo(HeoModel heoModel)
         {

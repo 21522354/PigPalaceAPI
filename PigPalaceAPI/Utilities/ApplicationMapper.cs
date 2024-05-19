@@ -13,6 +13,7 @@ namespace PigPalaceAPI.Utilities
             CreateMap<HEO, HeoModel>().ReverseMap();       
             CreateMap<HOADONHANGHOA, HoaDonHangHoaModel>().ReverseMap();
             CreateMap<HOADONHANGHOA, HoaDonHangHoaModel2>().ReverseMap();
+            CreateMap<LICHPHOIGIONG, LichPhoiGiongModel>().ReverseMap();
         }
     }
 }

@@ -115,7 +115,9 @@ namespace PigPalaceAPI.Controllers
                 {
                     return BadRequest("Pig not found");
                 }
-                heo.IsTrongTrangTrai = true;    
+                heo.IsTrongTrangTrai = true;
+                CHUONGHEO chuong = await _context.CHUONGHEOs.FindAsync(heo.MaChuong);
+                chuong.SoLuongHeo++;
             }
             await _context.SaveChangesAsync();
             return Ok("Invoice confirmed successfully");
