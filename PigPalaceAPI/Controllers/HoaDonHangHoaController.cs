@@ -116,6 +116,18 @@ namespace PigPalaceAPI.Controllers
                 return BadRequest("Can't update invoice");
             }
         }
+        [HttpDelete("XoaHoaDonHangHoa")]
+        public async Task<IActionResult> XoaHoaDonHangHoa(string maHoaDon)
+        {
+            var hoaDon = await _context.HOADONHANGHOAs.FirstOrDefaultAsync(x => x.MaHoaDon == maHoaDon);
+            if (hoaDon == null)
+            {
+                return BadRequest("Invoice not found");
+            }
+            _context.HOADONHANGHOAs.Remove(hoaDon);
+            await _context.SaveChangesAsync();
+            return Ok("Invoice deleted");
+        }
 
         public static string GenerateRandomString(int length)
         {

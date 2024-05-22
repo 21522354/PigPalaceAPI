@@ -19,7 +19,7 @@ namespace PigPalaceAPI.Data.Entity
         public virtual User User { get; set; }      
         public string TinhTrang { get; set; }
         public float LuongThucAn1Con { get; set; }
-        public Guid FarmID { get; set; }    
+        public Guid FarmID { get; set; }
 
     }
 }

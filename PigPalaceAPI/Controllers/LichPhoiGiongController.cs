@@ -105,5 +105,17 @@ namespace PigPalaceAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok("Pregnancy Schedule updated successfully");
         }
+        [HttpDelete("XoaLichPhoiGiong")]
+        public async Task<IActionResult> XoaLichPhoiGiong(string MaLich)
+        {
+            var lichPhoiGiong = await _context.LICHPHOIGIONGs.FindAsync(MaLich);
+            if (lichPhoiGiong == null)
+            {
+                return NotFound("Pregnancy Schedule not found");
+            }
+            _context.LICHPHOIGIONGs.Remove(lichPhoiGiong);
+            await _context.SaveChangesAsync();
+            return Ok("Pregnancy Schedule deleted");
+        }
     }
 }
