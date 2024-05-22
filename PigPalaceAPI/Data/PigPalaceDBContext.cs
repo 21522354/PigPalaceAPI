@@ -22,7 +22,9 @@ namespace PigPalaceAPI.Data
         public DbSet<HANGHOA> HANGHOAs { get; set; }
         public DbSet<Account> Accounts { get; set; }    
         public DbSet<LICHPHOIGIONG> LICHPHOIGIONGs { get; set; }
-        public DbSet<LICHCHOAN> LICHCHOANs { get; set; }    
+        public DbSet<LICHCHOAN> LICHCHOANs { get; set; }
+        public DbSet<LICHTIEM> LICHTIEMs { get; set; }
+        public DbSet<CT_LICHTIEM> CT_LICHTIEMs { get; set; }    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
