@@ -16,7 +16,8 @@ namespace PigPalaceAPI.Data.Entity
         public Guid UserID { get; set; }
         [ForeignKey("UserID")]
         public virtual User User { get; set; }  
-        public string TinhTrang { get; set; }   
+        public string TinhTrang { get; set; }
+        public Guid FarmID { get; set; }        
 
     }
 }
