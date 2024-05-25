@@ -17,6 +17,7 @@ namespace PigPalaceAPI.Utilities
             CreateMap<LICHCHOAN, LichChoAnRespond>().ReverseMap();
             CreateMap<LICHTIEM, LichTiemModel>().ReverseMap();  
             CreateMap<CT_LICHTIEM, CTLichTiemModel>().ReverseMap(); 
+            CreateMap<Roles, RolesModel>().ReverseMap();
         }
     }
 }
