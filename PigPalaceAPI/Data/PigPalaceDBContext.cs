@@ -24,7 +24,8 @@ namespace PigPalaceAPI.Data
         public DbSet<LICHPHOIGIONG> LICHPHOIGIONGs { get; set; }
         public DbSet<LICHCHOAN> LICHCHOANs { get; set; }
         public DbSet<LICHTIEM> LICHTIEMs { get; set; }
-        public DbSet<CT_LICHTIEM> CT_LICHTIEMs { get; set; }    
+        public DbSet<CT_LICHTIEM> CT_LICHTIEMs { get; set; }
+        public DbSet<THAMSO> THAMSOS { get; set; }      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
