@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PigPalaceAPI.Data;
 using PigPalaceAPI.Repository.FarmRepo;
 
 namespace PigPalaceAPI.Controllers
@@ -9,10 +11,12 @@ namespace PigPalaceAPI.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountRepository _repository;
+        private readonly PigPalaceDBContext _context;
 
-        public AccountController(IAccountRepository repository)
+        public AccountController(IAccountRepository repository, PigPalaceDBContext context)
         {
             _repository = repository;
+            _context = context;
         }
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp(string Gmail, string PassWord)
@@ -35,9 +39,9 @@ namespace PigPalaceAPI.Controllers
             return Ok(result);
         }
         [HttpPost("GoogleSignIn")]
-        public async Task<IActionResult> GoogleSignIn(string GoogleID)
+        public async Task<IActionResult> GoogleSignIn(string GoogleID, string Gmail)
         {
-            var result = await _repository.GoogleSignIn(GoogleID);
+            var result = await _repository.GoogleSignIn(GoogleID, Gmail);
             return Ok(result);
         }
         [HttpPost("FbSignIn")]
@@ -51,6 +55,18 @@ namespace PigPalaceAPI.Controllers
         {
             var result = await _repository.UpgradeAccount(AccountID);
             return Ok(result);
+        }
+        [HttpPut("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(string Gmail, string NewPassword)
+        {
+            var account = await _context.Accounts.FirstOrDefaultAsync(x => x.Gmail == Gmail);
+            if(account == null)
+            {
+                return BadRequest("Account not found");
+            }
+            account.PassWord = NewPassword;
+            await _context.SaveChangesAsync();
+            return Ok("Password reset successfully");
         }
     }
 }

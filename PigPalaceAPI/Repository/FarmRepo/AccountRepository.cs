@@ -32,7 +32,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
             return account.AccountID.ToString();
         }
 
-        public async Task<string> GoogleSignIn(string GoogleID)
+        public async Task<string> GoogleSignIn(string GoogleID, string Gmail)
         {
             var account = await _context.Accounts.FirstOrDefaultAsync(x => x.GoogleID == GoogleID);   
             if (account == null)
@@ -41,6 +41,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 {
                     AccountID = Guid.NewGuid(),
                     GoogleID = GoogleID,
+                    Gmail = Gmail,
                     IsFromGoogle = true
                 };
                 await _context.Accounts.AddAsync(newAccount);
