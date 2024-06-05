@@ -56,6 +56,16 @@ namespace PigPalaceAPI.Controllers
             var result = await _repository.UpgradeAccount(AccountID);
             return Ok(result);
         }
+        [HttpGet("GetIsUpgraded")]
+        public async Task<IActionResult> GetIsUpgraded(string AccountID)
+        {
+            var result = await _context.Accounts.FindAsync(AccountID);
+            if (result == null)
+            {
+                return BadRequest("Account not found");
+            }
+            return Ok(result.IsPremium);
+        }
         [HttpPut("ResetPassword")]
         public async Task<IActionResult> ResetPassword(string Gmail, string NewPassword)
         {
