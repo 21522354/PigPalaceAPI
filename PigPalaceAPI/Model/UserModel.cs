@@ -13,6 +13,7 @@ namespace PigPalaceAPI.Model
         public string? PhoneNumber { get; set; }
         public string? Sex { get; set; }
         public float CoefficientsSalary { get; set; }
-        public string? RoleID { get; set; }
+        public string RoleName { get; set; }   
+        // public string? RoleID { get; set; }
     }
 }

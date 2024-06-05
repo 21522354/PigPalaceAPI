@@ -269,12 +269,8 @@ namespace PigPalaceAPI.Repository.FarmRepo
                     Address = user.Address,
                     Email = user.Email,
                     PhoneNumber = user.PhoneNumber,
+                    RoleName = user.RoleName
                 };
-                if (user.RoleID != null)
-                {
-                    newUser.RoleID = user.RoleID;
-                    newUser.Role = await _context.Roles.FirstOrDefaultAsync(x => x.RoleID == user.RoleID);
-                }
                 await _context.Users.AddAsync(newUser);
                 await _context.SaveChangesAsync();
                 return new APIRespond { UserID = newUser.UserID ,Status = true, Message = "Login successful", Data = await GenerateToken(newUser) };
@@ -307,11 +303,7 @@ namespace PigPalaceAPI.Repository.FarmRepo
                 oldUser.Address = user.Address;
                 oldUser.Email = user.Email;
                 oldUser.PhoneNumber = user.PhoneNumber;
-                if(user.RoleID != null)
-                {
-                    oldUser.RoleID = user.RoleID;
-                    oldUser.Role = await _context.Roles.FirstOrDefaultAsync(x => x.RoleID == user.RoleID);
-                }   
+                oldUser.RoleName = user.RoleName;
                 await _context.SaveChangesAsync();
                 return "User updated successfully";
             }
