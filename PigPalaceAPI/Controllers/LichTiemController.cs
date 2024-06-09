@@ -31,6 +31,24 @@ namespace PigPalaceAPI.Controllers
             var listLichTiem = await _context.LICHTIEMs.Where(x => x.FarmID == FarmID).ToListAsync();
             return Ok(_mapper.Map<List<LichTiemModel>>(listLichTiem));
         }
+        [HttpGet("GetByHeoID")]
+        public async Task<IActionResult> GetByHeoID(string HeoID)
+        {
+            var heo = await _context.HEOs.FirstOrDefaultAsync(x => x.MaHeo == HeoID);
+            if (heo == null)
+            {
+                return NotFound("Pig not found");
+            }
+            var listLichTiem = await _context.CT_LICHTIEMs.Where(x => x.MaHeo == HeoID).ToListAsync();
+            var listLichTiemModel = new List<LichTiemModel>();
+            foreach (var item in listLichTiem)
+            {
+                var lichTiem = await _context.LICHTIEMs.FirstOrDefaultAsync(x => x.MaLichTiem == item.MaLich);
+                listLichTiemModel.Add(_mapper.Map<LichTiemModel>(lichTiem));
+            }
+            listLichTiemModel = listLichTiemModel.OrderByDescending(x => x.NgayTiem).ToList();
+            return Ok(listLichTiemModel);
+        }
         [HttpGet("GetHeoTrongLichTiem")]    
         public async Task<IActionResult> GetHeoTrongLichTiem(Guid MaLichTiem)
         {

@@ -31,6 +31,18 @@ namespace PigPalaceAPI.Controllers
             var listLPG = await _context.LICHPHOIGIONGs.Where(x => x.FarmID == FarmId).ToListAsync();
             return Ok(listLPG);
         }
+        [HttpGet("GetByHeoID")]
+        public async Task<IActionResult> GetByHeoID(string HeoID)
+        {
+            var heo = await _context.HEOs.FindAsync(HeoID);
+            if (heo == null)
+            {
+                return NotFound("Pig not found");
+            }
+            var listLPG = await _context.LICHPHOIGIONGs.Where(x => x.MaHeoDuc == HeoID || x.MaHeoNai == HeoID).ToListAsync();
+            listLPG = listLPG.OrderByDescending(x => x.NgayPhoi).ToList();
+            return Ok(listLPG); 
+        }
         
         [HttpPost("CreateLPG")]
         public async Task<IActionResult> CreateLPG(LichPhoiGiongModel lichPhoiGiong)
