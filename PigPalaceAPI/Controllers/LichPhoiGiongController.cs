@@ -52,11 +52,29 @@ namespace PigPalaceAPI.Controllers
             {
                 return NotFound("Farm not found");
             }
-            var newLichPhoiGiong = _mapper.Map<LICHPHOIGIONG>(lichPhoiGiong);
-            newLichPhoiGiong.TrangThai = "Đang chờ kết quả";
-            _context.LICHPHOIGIONGs.Add(newLichPhoiGiong);
-            await _context.SaveChangesAsync();
-            return Ok("Pregnancy Schedule created successfully");
+            var thamSo = await _context.THAMSOS.Where(x => x.FarmID == lichPhoiGiong.FarmID).FirstOrDefaultAsync();
+            if (thamSo == null)
+            {
+                var newLichPhoiGiong = _mapper.Map<LICHPHOIGIONG>(lichPhoiGiong);
+                newLichPhoiGiong.TrangThai = "Đang chờ kết quả";
+                _context.LICHPHOIGIONGs.Add(newLichPhoiGiong);
+                await _context.SaveChangesAsync();
+                return Ok("Pregnancy Schedule created successfully");
+            }
+            else
+            {
+                var heoNai = await _context.HEOs.FindAsync(lichPhoiGiong.MaHeoNai);
+                int Tuoi = (DateTime.Now - heoNai.NgaySinh).Days / 30;
+                if(Tuoi < thamSo.TuoiPhoiGiongToiThieuHeoCai)
+                {
+                    return BadRequest("Pig is too young for pregnancy");
+                }
+                var newLichPhoiGiong = _mapper.Map<LICHPHOIGIONG>(lichPhoiGiong);
+                newLichPhoiGiong.TrangThai = "Đang chờ kết quả";
+                _context.LICHPHOIGIONGs.Add(newLichPhoiGiong);
+                await _context.SaveChangesAsync();
+                return Ok("Pregnancy Schedule created successfully");
+            }
         }
         [HttpPut("XacNhanDauThai")]
         public async Task<IActionResult> XacNhanDauThai(string MaLich, DateTime NgayDauThai, bool IsSuccess, Guid FarmID)
