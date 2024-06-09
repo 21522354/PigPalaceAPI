@@ -162,19 +162,61 @@ namespace PigPalaceAPI.Controllers
                 hoadon.Email = Email;
                 hoadon.FarmID = FarmID;
                 hoadon.UserID = UserId;
-
-                _context.HOADONHEOs.Add(hoadon);
-                await _context.SaveChangesAsync();
-                foreach (var item in listHeoXuat)
+                
+                var thamSo = await _context.THAMSOS.Where(p => p.FarmID == FarmID).FirstOrDefaultAsync();
+                if(thamSo == null)
                 {
-                    CT_HOADONHEO cT_HOADONHEO = new CT_HOADONHEO();
-                    cT_HOADONHEO.MaHoaDon = hoadon.MaHoaDon;
-                    cT_HOADONHEO.FarmID = FarmID;
-                    cT_HOADONHEO.MaHeo = item.Maheo;
-                    _context.CT_HOADONHEOs.Add(cT_HOADONHEO);
+                    _context.HOADONHEOs.Add(hoadon);
                     await _context.SaveChangesAsync();
+                    foreach (var item in listHeoXuat)
+                    {
+                        CT_HOADONHEO cT_HOADONHEO = new CT_HOADONHEO();
+                        cT_HOADONHEO.MaHoaDon = hoadon.MaHoaDon;
+                        cT_HOADONHEO.FarmID = FarmID;
+                        cT_HOADONHEO.MaHeo = item.Maheo;
+                        _context.CT_HOADONHEOs.Add(cT_HOADONHEO);
+                        await _context.SaveChangesAsync();
+                    }
+                    return Ok("Invoice create successfully");
                 }
-                return Ok("Invoice create successfully");
+                else
+                {
+                    var TuoiToiThieuXuatChuong = thamSo.TuoiToiThieuXuatChuong;
+                    var TuoiToiDaXuatChuong = thamSo.TuoiToiDaXuatChuong;
+                    var TrongLuongToiThieuXuatChuong = thamSo.TrongLuongToiThieuXuatChuong;
+                    var TrongLuongToiDaXuatChuong = thamSo.TrongLuongToiDaXuatChuong;
+                    int soHeoKhongDat = 0;
+                    foreach (var item in listHeoXuat)
+                    {
+                        var heo = await _context.HEOs.Where(x => x.MaHeo == item.Maheo).FirstOrDefaultAsync();
+                        int tuoi = (DateTime.Now - heo.NgaySinh).Days / 30;
+                        float trongLuong = heo.TrongLuong;
+                        if (tuoi < TuoiToiThieuXuatChuong || tuoi > TuoiToiDaXuatChuong || trongLuong < TrongLuongToiThieuXuatChuong || trongLuong > TrongLuongToiDaXuatChuong)
+                        {
+                            soHeoKhongDat++;
+                        }
+                    }
+                    if (soHeoKhongDat > 0)
+                    {
+                        return BadRequest(soHeoKhongDat + " pig not meet the requirements");
+                    }
+                    else
+                    {
+                        _context.HOADONHEOs.Add(hoadon);
+                        await _context.SaveChangesAsync();
+                        foreach (var item in listHeoXuat)
+                        {
+                            CT_HOADONHEO cT_HOADONHEO = new CT_HOADONHEO();
+                            cT_HOADONHEO.MaHoaDon = hoadon.MaHoaDon;
+                            cT_HOADONHEO.FarmID = FarmID;
+                            cT_HOADONHEO.MaHeo = item.Maheo;
+                            _context.CT_HOADONHEOs.Add(cT_HOADONHEO);
+                            await _context.SaveChangesAsync();
+                        }
+                        return Ok("Invoice create successfully");
+                    }
+                }
+                
             }
             catch
             {
