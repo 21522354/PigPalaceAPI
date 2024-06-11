@@ -42,7 +42,7 @@ namespace PigPalaceAPI.Controllers
             var listPhieuNhap = await _context.HOADONHEOs.Where(x => x.FarmID == FarmID && x.LoaiHoaDon == "Phiếu nhập heo").ToListAsync();
             return Ok(listPhieuNhap);
         }
-        [HttpGet("GetHeoTrongPhieuNhap")]
+        [HttpGet("GetHeoTrongPhieu")]
         public async Task<IActionResult> GetHeoTrongPhieuNhap(string MaHoaDon, Guid FarmID)
         {
             if (_context.PigFarms.Find(FarmID) == null)
