@@ -32,6 +32,21 @@ namespace PigPalaceAPI.Controllers
             var listHoaDon = await _context.HOADONHEOs.Where(x => x.FarmID == FarmID).ToListAsync();
             return Ok(listHoaDon);
         }
+        [HttpGet("GetListHoaDonHeoByNhanVienThucHien")]
+        public async Task<IActionResult> GetListHoaDonHeoByNhanVienThucHien(Guid FarmID, Guid UserID)
+        {
+            if (_context.PigFarms.Find(FarmID) == null)
+            {
+                return BadRequest("Farm not found");
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == UserID);
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+            var listHoaDon = await _context.HOADONHEOs.Where(x => x.FarmID == FarmID && x.UserID == UserID).ToListAsync();
+            return Ok(listHoaDon);
+        }
         [HttpGet("GetListPhieuNhap")]
         public async Task<IActionResult> GetListPhieuNhap(Guid FarmID)
         {
