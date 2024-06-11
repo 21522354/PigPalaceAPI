@@ -66,7 +66,7 @@ namespace PigPalaceAPI.Controllers
             {
                 return NotFound("User not found");
             }
-            if (user.RoleName != "Quản lý")
+            if (user.RoleName != "Management")
             {
                 var listLichTiem = await _context.LICHTIEMs.Where(x => x.FarmID == FarmID && x.UserID == UserID).ToListAsync();
                 return Ok(_mapper.Map<List<LichTiemModel>>(listLichTiem));
