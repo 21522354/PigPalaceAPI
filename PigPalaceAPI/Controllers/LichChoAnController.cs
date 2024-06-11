@@ -20,6 +20,17 @@ namespace PigPalaceAPI.Controllers
             _context = context;
             _mapper = mapper;
         }
+        [HttpGet("GetAllThucAn")]
+        public async Task<IActionResult> GetAllThucAn(Guid FarmID)
+        {
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);
+            if (farm == null)
+            {
+                return NotFound("Farm not found");
+            }
+            var listThucAn = await _context.HANGHOAs.Where(x => x.FarmID == FarmID && x.LoaiHangHoa == "Thức ăn").ToListAsync();
+            return Ok(listThucAn);
+        }
         [HttpGet("GetAllLichChoAn")]
         public async Task<IActionResult> GetAllLichChoAn(Guid FarmId)
         {
