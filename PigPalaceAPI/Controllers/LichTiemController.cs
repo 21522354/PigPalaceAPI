@@ -53,6 +53,30 @@ namespace PigPalaceAPI.Controllers
             var listLichTiem = await _context.LICHTIEMs.Where(x => x.FarmID == FarmID).ToListAsync();
             return Ok(_mapper.Map<List<LichTiemModel>>(listLichTiem));
         }
+        [HttpGet("GetLichTiemByNhanVienThucHien")]
+        public async Task<IActionResult> GetLichTiemByNhanVienThucHien(Guid FarmID, Guid UserID)
+        {
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);
+            if (farm == null)
+            {
+                return NotFound("Farm not found");
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == UserID);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            if (user.RoleName != "Quản lý")
+            {
+                var listLichTiem = await _context.LICHTIEMs.Where(x => x.FarmID == FarmID && x.UserID == UserID).ToListAsync();
+                return Ok(_mapper.Map<List<LichTiemModel>>(listLichTiem));
+            }
+            else
+            {
+                var listLichTiem = await _context.LICHTIEMs.Where(x => x.FarmID == FarmID).ToListAsync();
+                return Ok(_mapper.Map<List<LichTiemModel>>(listLichTiem));
+            }
+        }
         [HttpGet("GetByHeoID")]
         public async Task<IActionResult> GetByHeoID(string HeoID)
         {

@@ -34,6 +34,11 @@ namespace PigPalaceAPI.Controllers
         [HttpGet("GetAllLichChoAn")]
         public async Task<IActionResult> GetAllLichChoAn(Guid FarmId)
         {
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmId);
+            if (farm == null)
+            {
+                return NotFound("Farm not found");
+            }
             var listLichChoAn = await _context.LICHCHOANs.Where(x => x.FarmID == FarmId).ToListAsync();
             var listLichChoAnRespond = _mapper.Map<List<LichChoAnRespond>>(listLichChoAn);
             for(int i = 0; i < listLichChoAn.Count; i++)
@@ -44,6 +49,46 @@ namespace PigPalaceAPI.Controllers
                 listLichChoAnRespond[i].TenHangHoa = hangHoa.TenHangHoa;
             }
             return Ok(listLichChoAnRespond);
+        }
+        [HttpGet("GetLichChoAnByNhanVienThucHien")]
+        public async Task<IActionResult> GetLichChoAnByNhanVienThucHien(Guid FarmID, Guid UserID)
+        {
+            var farm = await _context.PigFarms.FirstOrDefaultAsync(x => x.FarmID == FarmID);
+            if (farm == null)
+            {
+                return NotFound("Farm not found");
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserID == UserID);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            if(user.RoleName != "Quản lý")
+            {
+                var listLichChoAn = await _context.LICHCHOANs.Where(x => x.FarmID == FarmID && x.UserID == UserID).ToListAsync();
+                var listLichChoAnRespond = _mapper.Map<List<LichChoAnRespond>>(listLichChoAn);
+                for (int i = 0; i < listLichChoAn.Count; i++)
+                {
+                    var chuongHeo = await _context.CHUONGHEOs.FirstOrDefaultAsync(x => x.MaChuong == listLichChoAn[i].MaChuong);
+                    listLichChoAnRespond[i].LuongThucAn = listLichChoAn[i].LuongThucAn1Con * chuongHeo.SoLuongHeo;
+                    var hangHoa = await _context.HANGHOAs.FirstOrDefaultAsync(x => x.ID == listLichChoAn[i].MaHangHoa);
+                    listLichChoAnRespond[i].TenHangHoa = hangHoa.TenHangHoa;
+                }
+                return Ok(listLichChoAnRespond);
+            }
+            else
+            {
+                var listLichChoAn = await _context.LICHCHOANs.Where(x => x.FarmID == FarmID).ToListAsync();
+                var listLichChoAnRespond = _mapper.Map<List<LichChoAnRespond>>(listLichChoAn);
+                for (int i = 0; i < listLichChoAn.Count; i++)
+                {
+                    var chuongHeo = await _context.CHUONGHEOs.FirstOrDefaultAsync(x => x.MaChuong == listLichChoAn[i].MaChuong);
+                    listLichChoAnRespond[i].LuongThucAn = listLichChoAn[i].LuongThucAn1Con * chuongHeo.SoLuongHeo;
+                    var hangHoa = await _context.HANGHOAs.FirstOrDefaultAsync(x => x.ID == listLichChoAn[i].MaHangHoa);
+                    listLichChoAnRespond[i].TenHangHoa = hangHoa.TenHangHoa;
+                }
+                return Ok(listLichChoAnRespond);
+            }
         }
         [HttpPost("CreateLichChoAn1Ngay")]   
         public async Task<IActionResult> CreateLichChoAn1Ngay(LichChoAn1NgayModel lichChoAnModel)

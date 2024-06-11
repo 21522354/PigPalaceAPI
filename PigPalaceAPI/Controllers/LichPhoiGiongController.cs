@@ -20,7 +20,7 @@ namespace PigPalaceAPI.Controllers
             _context = context;
             _mapper = mapper;
         }
-        [HttpGet("GetAll")]
+        [HttpGet("GetAllLichPhoiGiong")]
         public async Task<IActionResult> GetAll(Guid FarmId)
         {
             var farm = await _context.PigFarms.FindAsync(FarmId);
@@ -30,6 +30,30 @@ namespace PigPalaceAPI.Controllers
             }
             var listLPG = await _context.LICHPHOIGIONGs.Where(x => x.FarmID == FarmId).ToListAsync();
             return Ok(listLPG);
+        }
+        [HttpGet("GetLichPhoiGiongByNhanVienThucHien")]
+        public async Task<IActionResult> GetLichPhoiGiongByNhanVienThucHien(Guid FarmID, Guid UserID)
+        {
+            var farm = await _context.PigFarms.FindAsync(FarmID);
+            if (farm == null)
+            {
+                return NotFound("Farm not found");
+            }
+            var user = await _context.Users.FindAsync(UserID);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+            if(user.RoleName != "Quản lý")
+            {
+                var listLPG = await _context.LICHPHOIGIONGs.Where(x => x.FarmID == FarmID && x.UserID == UserID).ToListAsync();
+                return Ok(listLPG);
+            }
+            else
+            {
+                var listLPG = await _context.LICHPHOIGIONGs.Where(x => x.FarmID == FarmID).ToListAsync();
+                return Ok(listLPG);
+            }
         }
         [HttpGet("GetByHeoID")]
         public async Task<IActionResult> GetByHeoID(string HeoID)
