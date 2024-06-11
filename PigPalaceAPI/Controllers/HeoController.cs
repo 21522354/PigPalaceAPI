@@ -158,7 +158,7 @@ namespace PigPalaceAPI.Controllers
             }
         }
         [HttpDelete("DeleteHeo/{id}")]
-        public async Task<ActionResult<string>> DeleteHeo(Guid id)
+        public async Task<ActionResult<string>> DeleteHeo(string id)
         {
             try
             {
