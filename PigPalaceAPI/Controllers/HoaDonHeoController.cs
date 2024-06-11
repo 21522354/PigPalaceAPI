@@ -98,7 +98,7 @@ namespace PigPalaceAPI.Controllers
             
         }
 
-        [HttpPut("XacNhanHoaDonHeo")]  
+        [HttpPut("XacNhanPhieuNhapHeo")]  
         public async Task<IActionResult> XacNhanPhieuNhap(string MaHoaDon)
         {
             var hoadon = await _context.HOADONHEOs.Where(x => x.MaHoaDon == MaHoaDon).FirstOrDefaultAsync();
@@ -250,7 +250,9 @@ namespace PigPalaceAPI.Controllers
                 {
                     return BadRequest("Pig not found");
                 }
-                heo.IsTrongTrangTrai = false;    
+                heo.IsTrongTrangTrai = false;
+                CHUONGHEO chuong = await _context.CHUONGHEOs.FindAsync(heo.MaChuong);
+                chuong.SoLuongHeo--;
             }
             await _context.SaveChangesAsync();
             return Ok("Invoice confirmed successfully");
