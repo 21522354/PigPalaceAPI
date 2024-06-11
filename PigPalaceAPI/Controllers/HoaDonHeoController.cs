@@ -140,7 +140,16 @@ namespace PigPalaceAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok("Invoice deleted successfully");  
         }
-
+        [HttpGet("GetListPhieuXuat")]
+        public async Task<IActionResult> GetListPhieuXuat(Guid FarmID)
+        {
+            if (_context.PigFarms.Find(FarmID) == null)
+            {
+                return BadRequest("Farm not found");
+            }
+            var listPhieuNhap = await _context.HOADONHEOs.Where(x => x.FarmID == FarmID && x.LoaiHoaDon == "Phiếu xuất heo").ToListAsync();
+            return Ok(listPhieuNhap);
+        }
         [HttpPost("CreatePhieuXuatHeo")]    
         public async Task<IActionResult> CreatePhieuXuat(DateTime NgayLap, DateTime NgayBan, string Note, Guid FarmID, Guid UserId, float TienTrenDVT, float TongTien ,string TenCongTy, string TenDoiTac, string DiaChi, string SoDienThoai, string Email, [FromBody] List<HeoXuatModel> listHeoXuat)
         {
