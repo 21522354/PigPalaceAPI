@@ -57,7 +57,7 @@ namespace PigPalaceAPI.Controllers
             return Ok(result);
         }
         [HttpGet("GetIsUpgraded")]
-        public async Task<IActionResult> GetIsUpgraded(string AccountID)
+        public async Task<IActionResult> GetIsUpgraded(Guid AccountID)
         {
             var result = await _context.Accounts.FindAsync(AccountID);
             if (result == null)
