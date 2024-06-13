@@ -65,7 +65,13 @@ namespace PigPalaceAPI.Controllers
                 return BadRequest("Farm not found");
             }
             var listHeo = await _context.CT_HOADONHEOs.Where(x => x.FarmID == FarmID && x.MaHoaDon == MaHoaDon).ToListAsync();
-            return Ok(listHeo);
+            var listHeoReturn = new List<HEO>();
+            foreach (var item in listHeo)
+            {
+                var heo = await _context.HEOs.FindAsync(item.MaHeo);
+                listHeoReturn.Add(heo);
+            }
+            return Ok(_mapper.Map<List<HeoModel>>(listHeoReturn));
         }
         [HttpPost("CreatePhieuNhapHeo")]
         public async Task<IActionResult> CreatePhieuNhap(DateTime NgayLap, DateTime NgayMua, string Note, Guid FarmID, Guid UserId, string TenCongTy, string TenDoiTac, string DiaChi, string SoDienThoai, string Email, [FromBody] List<HeoModel> listHeoNhap)
