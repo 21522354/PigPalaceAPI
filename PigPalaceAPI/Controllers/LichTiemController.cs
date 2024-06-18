@@ -140,14 +140,36 @@ namespace PigPalaceAPI.Controllers
         [HttpPut("HoanThanhLichTiem")]
         public async Task<IActionResult> HoanThanhLichTiem(Guid MaLichTiem)
         {
-            var licTiem = await _context.LICHTIEMs.FirstOrDefaultAsync(x => x.MaLichTiem == MaLichTiem);
-            if (licTiem == null)
+            var lichTiem = await _context.LICHTIEMs.FirstOrDefaultAsync(x => x.MaLichTiem == MaLichTiem);
+            if (lichTiem == null)
             {
                 return NotFound("Injection schedule not found");
             }
-            licTiem.TinhTrang = "Completed";
+            lichTiem.TinhTrang = "Completed";
+            var hangHoa = await _context.HANGHOAs.FirstOrDefaultAsync(x => x.ID == lichTiem.MaHangHoa);
+            if(hangHoa != null)
+            {
+                hangHoa.TonKho -= lichTiem.LieuLuong;
+            }
             await _context.SaveChangesAsync();
             return Ok("Injection schedule completed");
+        }
+        [HttpDelete("DeleteLichTiem")]
+        public async Task<IActionResult> DeleteLichTiem(Guid MaLichTiem)
+        {
+            var lichTiem = await _context.LICHTIEMs.FirstOrDefaultAsync(x => x.MaLichTiem == MaLichTiem);
+            if (lichTiem == null)
+            {
+                return NotFound("Injection schedule not found");
+            }
+            var listHeo = await _context.CT_LICHTIEMs.Where(x => x.MaLich == MaLichTiem).ToListAsync();
+            foreach (var heo in listHeo)
+            {
+                _context.CT_LICHTIEMs.Remove(heo);
+            }
+            _context.LICHTIEMs.Remove(lichTiem);
+            await _context.SaveChangesAsync();
+            return Ok("Delete Injection Schedule successfully");
         }
     }
 }
