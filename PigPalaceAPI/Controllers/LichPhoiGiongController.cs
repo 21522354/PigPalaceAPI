@@ -88,6 +88,16 @@ namespace PigPalaceAPI.Controllers
             else
             {
                 var heoNai = await _context.HEOs.FindAsync(lichPhoiGiong.MaHeoNai);
+
+                var listLPG = await _context.LICHPHOIGIONGs.Where(p => p.MaHeoNai == heoNai.MaHeo).ToListAsync();
+                foreach (var item in listLPG)
+                {
+                    if(item.TrangThai == "Đang chờ kết quả" || item.TrangThai == "Đã đậu thai")
+                    {
+                        return BadRequest("Pig is already in pregnancy schedule");
+                    }
+                }
+
                 int Tuoi = (DateTime.Now - heoNai.NgaySinh).Days / 30;
                 if(Tuoi < thamSo.TuoiPhoiGiongToiThieuHeoCai)
                 {
