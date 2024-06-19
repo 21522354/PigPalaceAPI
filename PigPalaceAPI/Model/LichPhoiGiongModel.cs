@@ -7,7 +7,7 @@ namespace PigPalaceAPI.Model
     {
         public string MaLich { get; set; }
         public string MaHeoNai { get; set; }
-        public string MaHeoDuc { get; set; }
+        public string? MaHeoDuc { get; set; }
         public DateTime NgayPhoi { get; set; }
         public Guid UserID { get; set; }
         public Guid FarmID { get; set; }
