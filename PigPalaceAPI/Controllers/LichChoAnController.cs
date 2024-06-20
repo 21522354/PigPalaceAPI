@@ -123,6 +123,17 @@ namespace PigPalaceAPI.Controllers
                 return BadRequest("Feeding hours exceed the day");
             }
 
+            float tongLuongThucAn = 0;
+            for (int i = 0; i < lichChoAnModel.ListChuongHeoChoAn.Count; i++)
+            {
+                var chuongHeo = await _context.CHUONGHEOs.FirstOrDefaultAsync(x => x.MaChuong == lichChoAnModel.ListChuongHeoChoAn[i].MaChuong);
+                tongLuongThucAn += lichChoAnModel.SoLuongCho1ConHeo1Ngay * chuongHeo.SoLuongHeo;
+            }
+            if (tongLuongThucAn > HangHoa.TonKho)
+            {
+                return BadRequest("Insufficient inventory");
+            }
+
             DateTime NgayChoAn = lichChoAnModel.NgayBatDau;
             for(int i = 0; i < lichChoAnModel.SoLanChoAnMoiNgay; i++)
             {
@@ -220,6 +231,10 @@ namespace PigPalaceAPI.Controllers
             var hangHoa = await _context.HANGHOAs.FirstOrDefaultAsync(x => x.ID == lichChoAn.MaHangHoa);
             var chuongHeo = await _context.CHUONGHEOs.FirstOrDefaultAsync(x => x.MaChuong == lichChoAn.MaChuong);   
             hangHoa.TonKho -= lichChoAn.LuongThucAn1Con * chuongHeo.SoLuongHeo;
+            if(hangHoa.TonKho < 0)
+            {
+                return BadRequest("Insufficient inventory");
+            }
 
             _context.HANGHOAs.Update(hangHoa);
             _context.LICHCHOANs.Update(lichChoAn);
