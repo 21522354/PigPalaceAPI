@@ -81,7 +81,7 @@ namespace PigPalaceAPI.Controllers
                 var coCauHeo = new CoCauHeoModel(); 
                 var giongHeo = await _context.GIONGHEOs.FirstOrDefaultAsync(x => x.MaGiongHeo == item.MaGiong);
                 coCauHeo.TenGiongHeo = giongHeo.TenGiongHeo;
-                coCauHeo.Rate = ((float)item.Total / totalHeo) * 100;
+                coCauHeo.SoLuong = item.Total;
                 listCoCauHeoModel.Add(coCauHeo);
             }
             return Ok(listCoCauHeoModel); 
@@ -238,6 +238,6 @@ namespace PigPalaceAPI.Controllers
     public class CoCauHeoModel
     {
         public string TenGiongHeo { get; set; }     
-        public float Rate { get; set; }
+        public float SoLuong { get; set; }
     }
 }
